@@ -1,6 +1,5 @@
 <template>
   <div class="welcome container">
-    <p>Welcome</p>
     <div v-if="showLogin">
       <h2>Login</h2>
       <LoginForm />
@@ -9,7 +8,7 @@
       </p>
     </div>
     <div v-else>
-      <h2>Sign up</h2>
+      <h2 class="mt-5">Sign up</h2>
       <SignupForm />
       <p>
         Already Registered<span @click="showLogin = true">Login</span>instead
@@ -60,5 +59,6 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
+  padding: 15px 10px;
 }
 </style>
