@@ -26,6 +26,7 @@ export default {
       if (!error.value){
         context.emit('Login')
       }
+      console.log('user logged in');
     }
 
     return {email, password, handleSubmit, error}
