@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg py-3 fixed-top">
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
     <div class="container">
-      <a href="#" class="navbar-brand text-dark">Bloggers</a>
+      <a href="#" class="navbar-brand">Bloggers</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -10,17 +10,6 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <div class="collapse navbar-collapse" id="navmenu">
-        <ul class="navbar-nav ms-auto">
-          <li>
-            Login
-          </li>
-          <li>
-            Signup
-          </li>
-        </ul>
-      </div>
     </div>
   </nav>
 </template>
@@ -29,15 +18,4 @@
 export default {};
 </script>
 
-<style scoped>
-.nav-link.login-link {
-  padding: 5px 10px;
-  background: green;
-  margin-right: 25px;
-}
-
-.nav-link.signup-link {
-  padding: 5px 10px;
-  background: blue;
-}
-</style>
+<style></style>
