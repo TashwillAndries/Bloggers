@@ -1,17 +1,18 @@
 <template>
   <div class="welcome container">
     <div v-if="showLogin">
-      <h2 class="mt-5">Login</h2>
-      <LoginForm />
+      <h2>Login</h2>
+      <LoginForm @login="enterBlog" />
       <p>
-        No Account yet <span @click="showLogin = false">Signup</span>instead
+        No Account yet? <span @click="showLogin = false">Signup</span> instead
       </p>
     </div>
     <div v-else>
-      <h2 class="mt-5">Sign up</h2>
-      <SignupForm />
+      <h2>Signup</h2>
+      <SignupForm @signup="enterBlog" />
       <p>
-        Already Registered<span @click="showLogin = true">Login</span>instead
+        Already registered?
+        <span @click="showLogin = true">Login</span> instead
       </p>
     </div>
   </div>
@@ -21,11 +22,17 @@
 import SignupForm from "../components/SignupForm.vue";
 import LoginForm from "../components/LoginForm.vue";
 import { ref } from "@vue/reactivity";
+import { useRouter } from "vue-router";
 export default {
   components: { SignupForm, LoginForm },
   setup() {
     const showLogin = ref(true);
-    return { showLogin };
+    const router = useRouter();
+
+    const enterBlog = () => {
+      router.push({ name: "Blogs" });
+    };
+    return { showLogin, enterBlog };
   },
 };
 </script>
@@ -59,6 +66,5 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
-  padding: 15px 10px;
 }
 </style>

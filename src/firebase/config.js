@@ -3,12 +3,12 @@ import "firebase/compat/firestore";
 import "firebase/compat/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB26BQ7PDkEvhxQKuiH640Ty9b0KmQQndo",
-  authDomain: "blog-project-510ba.firebaseapp.com",
-  projectId: "blog-project-510ba",
-  storageBucket: "blog-project-510ba.appspot.com",
-  messagingSenderId: "195892222378",
-  appId: "1:195892222378:web:c9dd829ee61e4c36cdf3d3",
+  apiKey: "AIzaSyCJW_1-koTvhWs93Ct6dhQ5Z7oroFopwYo",
+  authDomain: "blog-site-5288a.firebaseapp.com",
+  projectId: "blog-site-5288a",
+  storageBucket: "blog-site-5288a.appspot.com",
+  messagingSenderId: "10222170570",
+  appId: "1:10222170570:web:a54a2fa0d63311a0c29f33",
 };
 
 firebase.initializeApp(firebaseConfig);
