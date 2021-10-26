@@ -1,4 +1,5 @@
 <template>
+<NavBar/>
   <form @submit.prevent="handleSubmit">
     <div class="input-group input-group-sm mb-3">
     <input class="form-control" type="email" placeholder="Enter email" required v-model="email">
@@ -14,7 +15,9 @@
 <script>
 import {ref} from '@vue/reactivity'
 import loginUser from '../composable/loginUser'
+import NavBar from '../components/Navbar.vue'
 export default {
+  components: {NavBar},
   setup(props, context) {
     const email = ref('')
     const password = ref('')

@@ -1,7 +1,7 @@
 <template>
   <div class="welcome container">
     <div v-if="showLogin">
-      <h2>Login</h2>
+      <h2 class="mt-5">Login</h2>
       <LoginForm />
       <p>
         No Account yet <span @click="showLogin = false">Signup</span>instead
