@@ -13,19 +13,11 @@
 
       <div class="collapse navbar-collapse" id="navmenu">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <router-link
-              :to="{ name: 'Login' }"
-              class="nav-link login-link text-dark"
-              >Login</router-link
-            >
+          <li>
+            Login
           </li>
-          <li class="nav-item">
-            <router-link
-              :to="{ name: 'Signup' }"
-              class="nav-link signup-link text-dark"
-              >Signup</router-link
-            >
+          <li>
+            Signup
           </li>
         </ul>
       </div>
