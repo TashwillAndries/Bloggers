@@ -1,15 +1,15 @@
 <template>
   <div class="welcome container">
-    <div v-if="showLogin">
+    <div class="form" v-if="showLogin">
       <Navbar />
-      <h2 class="mt-5">Login</h2>
+      <h2 class="mt-5">Blogger</h2>
       <LoginForm @login="enterBlog" />
       <p>
         No Account yet? <span @click="showLogin = false">Signup</span> instead
       </p>
     </div>
-    <div v-else>
-      <h2>Signup</h2>
+    <div class="form" v-else>
+      <h2 class="mt-5">Blogger</h2>
       <SignupForm @signup="enterBlog" />
       <p>
         Already registered?
@@ -68,5 +68,8 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
+}
+.form {
+  margin-top: 100px;
 }
 </style>
