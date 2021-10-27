@@ -9,7 +9,7 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item" v-if="showLogin">
               <span
-                class="text-light text-decoration-none bg-primary"
+                class="text-light text-decoration-none bg-info"
                 @click="showLogin = false"
                 >Sign up</span
               >
