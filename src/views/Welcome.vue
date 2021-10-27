@@ -1,32 +1,49 @@
 <template>
   <div class="welcome container">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+      <div class="container">
+        <router-link class="navbar-brand" :to="{ name: 'Welcome' }"
+          >Welcome</router-link
+        >
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item" v-if="showLogin">
+              <span
+                class="text-light text-decoration-none bg-primary"
+                @click="showLogin = false"
+                >Sign up</span
+              >
+            </li>
+
+            <li class="nav-item" v-else>
+              <span
+                class="text-light text-decoration-none bg-success"
+                @click="showLogin = true"
+                >Login</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div v-if="showLogin">
-      <Navbar />
       <h2 class="mt-5">Login</h2>
       <LoginForm @login="enterBlog" />
-      <p>
-        No Account yet? <span @click="showLogin = false">Signup</span> instead
-      </p>
     </div>
     <div v-else>
-      <h2>Signup</h2>
+      <h2 class="mt-5">Signup</h2>
       <SignupForm @signup="enterBlog" />
-      <p>
-        Already registered?
-        <span @click="showLogin = true">Login</span> instead
-      </p>
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
 import SignupForm from "../components/SignupForm.vue";
 import LoginForm from "../components/LoginForm.vue";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 export default {
-  components: { SignupForm, LoginForm, Navbar },
+  components: { SignupForm, LoginForm },
   setup() {
     const showLogin = ref(true);
     const router = useRouter();
@@ -68,5 +85,10 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
+}
+span {
+  margin-right: 15px;
+  padding: 8px 20px;
+  border-radius: 15px;
 }
 </style>
