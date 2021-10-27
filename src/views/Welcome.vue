@@ -1,8 +1,5 @@
 <template>
   <div class="welcome container">
-    <div class="form" v-if="showLogin">
-      <Navbar />
-      <h2 class="mt-5">Blogger</h2>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
       <div class="container">
         <router-link class="navbar-brand" :to="{ name: 'Welcome' }"
@@ -12,7 +9,7 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item" v-if="showLogin">
               <span
-                class="text-light text-decoration-none bg-primary"
+                class="text-decoration-none btn btn-info"
                 @click="showLogin = false"
                 >Sign up</span
               >
@@ -20,7 +17,7 @@
 
             <li class="nav-item" v-else>
               <span
-                class="text-light text-decoration-none bg-success"
+                class="text-decoration-none btn btn-success"
                 @click="showLogin = true"
                 >Login</span
               >
@@ -50,7 +47,6 @@ export default {
   setup() {
     const showLogin = ref(true);
     const router = useRouter();
-
     const enterBlog = () => {
       router.push({ name: "Blogs" });
     };
@@ -85,12 +81,6 @@ export default {
   font-weight: bold;
   text-decoration: underline;
   cursor: pointer;
-}
-.welcome button {
-  margin: 20px auto;
-}
-.form {
-  margin-top: 100px;
 }
 span {
   margin-right: 15px;
