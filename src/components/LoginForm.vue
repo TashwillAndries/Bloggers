@@ -5,7 +5,7 @@
     <div class="error">
       {{ error }}
     </div>
-    <button>Login</button>
+    <button class="btn btn-info p-2 px-5">Login</button>
   </form>
 </template>
 

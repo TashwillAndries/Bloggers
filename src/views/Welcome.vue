@@ -1,7 +1,8 @@
 <template>
   <div class="welcome container">
     <div v-if="showLogin">
-      <h2>Login</h2>
+      <Navbar />
+      <h2 class="mt-5">Login</h2>
       <LoginForm @login="enterBlog" />
       <p>
         No Account yet? <span @click="showLogin = false">Signup</span> instead
@@ -19,12 +20,13 @@
 </template>
 
 <script>
+import Navbar from "../components/Navbar.vue";
 import SignupForm from "../components/SignupForm.vue";
 import LoginForm from "../components/LoginForm.vue";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
 export default {
-  components: { SignupForm, LoginForm },
+  components: { SignupForm, LoginForm, Navbar },
   setup() {
     const showLogin = ref(true);
     const router = useRouter();
