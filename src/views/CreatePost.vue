@@ -26,7 +26,7 @@
 
 <script>
 import { ref } from 'vue'
-import useStorage from '@/composables/useStorage'
+import useStorage from "../composable/useStorage"
 
 export default {
     name:'CreatePost',
