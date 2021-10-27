@@ -1,44 +1,35 @@
 <template>
-  <div class="create-post">
-      <form>
-          <label>Title</label>
-          <input v-model="title" type="text" required>
-          <label>Select Banner Image</label>
-          <input
-            style="display: none"
-            type="file" 
-            @change="previewImage"
-            accept="image/*"
-            ref="fileInput">
-          <p>Progress: {{ uploadValue.toFixed() + "%" }}
-              <progress :value="uploadValue" max="100"></progress>
-          </p>
-          <button @click="$refs.fileInput.click()">Select Image</button>
-          <img class="preview" :src="picture">
-          <button @click.prevent="onUpload">Upload</button>
-          <label>Content</label>
-          <textarea v-model="body" required></textarea>
-          <label>Tags</label>
-          <input 
-            v-model="tag" 
+    <form @submit.prevent="handleSubmit">
+        <h4>Create New BlogPost</h4>
+        <br>
+        <input 
             type="text" 
-            @keydown.enter.prevent="handleKeyDown"
-          />
-          <div v-for="tag in tags" :key="tag">
-            # {{ tag }}
-          </div>
-          <button>Create Post</button>
-      </form>
-  </div>
+            required 
+            placeholder="Blog Title" 
+            v-model="title">
+        <textarea 
+            required
+            placeholder="Blog Content..."
+            v-model="content">
+        </textarea>
+        <label>Upload Banner Image</label>
+        <p>Progress: {{ uploadValue.toFixed() + "%" }}
+            <progress style="display: none" :value="uploadValue" max="100"></progress>
+        </p>
+        <img class="preview" :src="picture">
+        <input type="file" @change="handleChange">
+        <div class="error">{{ fileError }}</div>
+        <div class="error"></div>
+        <button @click="onUpload">Create</button>
+    </form>
 </template>
 
 <script>
-import { ref } from 'vue';
-import firebase from 'firebase';
-// import axios from 'axios'
+import { ref } from 'vue'
+import useStorage from '@/composables/useStorage'
 
 export default {
-    name: 'Upload',
+    name:'CreatePost',
     data() {
         return {
             imageData: null,
@@ -50,42 +41,62 @@ export default {
         previewImage(event) {
             this.uploadValue = 0;
             this.picture = null;
-            this.imageData = event.target.files[0]
-        },
-        onUpload() {
-            this.picture = null;
-            const storageRef = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
-            storageRef.on(`state changed`, snapshot => {
-                this.uploadValue = (snapshot.bytesTransferred / snapshot.totalBytes)* 100;
-                }, error => {console.log(error.message)},
-                () => {this.uploadValue = 100;
-                storageRef.snapshot.ref.getDownloadURL().then((url) => {
-                    this.picture = url;
-                });
-                }
-                );
+            this,this.imageData = event.target.files[0];
         }
     },
     setup() {
-      const title = ref('')
-      const body = ref('')
-      const tag = ref('')
-      const tags = ref([])
+        const { filePath, url, uploadImage } = useStorage()
 
-      const handleKeyDown = () => {
-        if (!tags.value.includes(tag.value)) {
-          tag.value = tag.value.replace(/\s/, '')
-          tags.value.push(tag.value)
+        const title = ref('')        
+        const content = ref('')
+        const file = ref(null)
+        const fileError = ref(null)
+
+        const handleSubmit = async () => {
+            if (file.value) {
+                await uploadImage(file.value)
+                console.log('image uploaded, url: ', url.value);
+            }
         }
 
-        tag.value = ''
-      }
+        // Allowed file types
+        const types = ['image/png', 'image/jpeg']
 
-      return { title, body, tag, handleKeyDown, tags }
+        const handleChange = (e) => {
+            const selected = e.target.files[0]
+            console.log(selected);
+
+            if (selected && types.includes(selected.type)) {
+                file.value = selected
+                fileError.value = null
+                previewImage()
+            } else {
+                file.value = null
+                fileError.value = 'Please select an image file (png or jpg)'
+            }
+        }
+        
+        return { title, content, handleSubmit, handleChange, fileError }
     }
 }
 </script>
 
 <style>
-
+    form {
+        display: flex;
+        flex-direction: column;
+        margin: 200px 500px;
+    }
+    input[type="file"] {
+        border: 0;
+        padding: 0;
+    }
+    label {
+        font-size: 12px;
+        display: block;
+        margin-top: 30px;
+    }
+    button {
+        margin-top: 20px;
+    }
 </style>
