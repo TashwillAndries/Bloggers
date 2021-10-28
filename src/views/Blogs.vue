@@ -11,18 +11,42 @@
       </div>
     </div>
   </nav>
+  <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{blog.title}}</h5>
+        <p>{{blog.createdAt}}</p>
+        <p class="card-text">{{blog.content}}</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import getUsers from "../composable/getUsers";
 import LogoutUser from "../composable/LogoutUser"
 import { useRouter } from 'vue-router'
-import { watch } from '@vue/runtime-core'
+import getBlogs from "../composable/getBlogs"
+import { computed, watch } from '@vue/runtime-core'
+import { formatDistanceToNow } from "date-fns"
 export default {
   setup() {
     const {logout, error} = LogoutUser()
     const { user } = getUsers();
     const router = useRouter()
+    const {blogs, err, fetch} = getBlogs()
+
+    const formattedDocs = computed(() => {
+      if (blogs.value) {
+        return blogs.value.map(post => {
+          let time = formatDistanceToNow(post.createdAt.toDate())
+          return { ...post, createdAt: time}
+        })
+      }
+    })
+
+    fetch()
 
     watch(user, () => {
       if (!user.value) {
@@ -37,7 +61,7 @@ export default {
       }
     }
 
-    return { user, handleClick };
+    return { user, handleClick, blogs, err, formattedDocs };
   },
 };
 </script>
@@ -71,5 +95,8 @@ export default {
 }
 .buttons button {
   margin-left: 10px;
+}
+.SingleBlog {
+  margin-top: 5%;
 }
 </style>

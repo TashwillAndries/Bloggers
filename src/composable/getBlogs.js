@@ -3,7 +3,7 @@ import { ref } from "@vue/reactivity";
 
 const getBlogs = () => {
   const blogs = ref([]);
-  const error = ref(null);
+  const err = ref(null);
 
   const fetch = async () => {
     try {
@@ -15,12 +15,12 @@ const getBlogs = () => {
       blogs.value = res.docs.map((doc) => {
         return { ...doc.data(), id: doc.id };
       });
-    } catch (err) {
-      error.value = err.message;
-      console.log(error.value);
+    } catch (error) {
+      err.value = error.message;
+      console.log(err.value);
     }
   };
-  return { blogs, error, fetch };
+  return { blogs, err, fetch };
 };
 
 export default getBlogs;
