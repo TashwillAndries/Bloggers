@@ -39,7 +39,7 @@ const routes = [
     path: "/createpost",
     name: "Create",
     component: Create,
-    beforeEnter: requireAuth,
+    // beforeEnter: requireAuth,
   },
 ];
 
