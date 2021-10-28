@@ -3,7 +3,7 @@
     <div class="container">
       <div class="headers">
         <router-link class="head" :to="{ name: 'Blogs' }">Welcome</router-link>
-        <p class="displayName">(username)</p>
+        <p class="displayName">{{ user.displayName }}</p>
       </div>
       <div class="buttons">
         <button class="btn btn-outline-success">+</button>
@@ -14,7 +14,13 @@
 </template>
 
 <script>
-export default {};
+import getUsers from "../composable/getUsers";
+export default {
+  setup() {
+    const { user } = getUsers();
+    return { user };
+  },
+};
 </script>
 
 <style scoped>
