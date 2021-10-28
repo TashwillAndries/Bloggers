@@ -2,14 +2,38 @@
   <div class="welcome container">
     <form @submit.prevent="handleSubmit">
       <h4>Create Blog Post</h4>
-      <input type="text" placeholder="Title" v-model="title" required />
-      <textarea placeholder="Content..." v-model="content" required></textarea>
-      <label>Upload Banner Image</label>
-      <input @change="handleChange" type="file" />
+      <div class="input-group input-group-lg">
+        <input
+          type="text"
+          placeholder="Title"
+          v-model="title"
+          required
+          class="form-control shadow-none"
+        />
+      </div>
+      <div class="input-group input-group-lg">
+        <textarea
+          class="form-control shadow-none"
+          placeholder="Content..."
+          v-model="content"
+          required
+        ></textarea>
+      </div>
+      <div class="input-group input-group-lg">
+        <input
+          @change="handleChange"
+          type="file"
+          class="form-control shadow-none"
+        />
+      </div>
       <div class="error">{{ fileError }}</div>
 
-      <button v-if="!isPending">Create Post</button>
-      <button v-if="isPending" disabled>Saving...</button>
+      <button v-if="!isPending" class="btn btn-success p-2 px-5">
+        Create Post
+      </button>
+      <button v-if="isPending" disabled class="btn btn-success p-2 px-5">
+        Saving...
+      </button>
     </form>
   </div>
 </template>
