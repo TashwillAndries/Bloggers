@@ -21,6 +21,19 @@
       </div>
       <div class="input-group input-group-lg">
         <input
+          type="text"
+          placeholder="Tags"
+          v-model="tag"
+          @keydown.enter.prevent="handleKeydown"
+          required
+          class="form-control shadow-none"
+        />
+      </div>
+      <div v-for="tag in tags" :key="tag" class="pill">
+              #{{ tag }}
+      </div>
+      <div class="input-group input-group-lg">
+        <input
           @change="handleChange"
           type="file"
           class="form-control shadow-none"
@@ -52,6 +65,8 @@ export default {
 
     const title = ref("");
     const content = ref("");
+    const tag = ref("");
+    const tags = ref([]);
     const file = ref(null);
     const fileError = ref(null);
     const isPending = ref(false);
@@ -75,6 +90,14 @@ export default {
         }
       }
     };
+    const handleKeydown = () => {
+        if (!tags.value.includes(tag.value)) {
+            tag.value = tag.value.replace(/\s/, '') // removes all whitespaces
+            tags.value.push(tag.value)
+        }
+
+        tag.value = ''
+    }
     // Allowed file types
     const types = ["image/png", "image/jpeg"];
     const handleChange = (e) => {
@@ -89,7 +112,7 @@ export default {
       }
     };
 
-    return { title, content, handleSubmit, handleChange, fileError, isPending };
+    return { title, content, handleSubmit, handleChange, fileError, isPending, tag, tags, handleKeydown };
   },
 };
 </script>

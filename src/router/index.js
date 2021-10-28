@@ -40,11 +40,6 @@ const routes = [
     name: "Create",
     component: Create,
   },
-  {
-    path: "/create",
-    name: "Create",
-    component: Create,
-  },
 ];
 
 const router = createRouter({
