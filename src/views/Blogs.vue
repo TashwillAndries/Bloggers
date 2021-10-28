@@ -7,7 +7,7 @@
       </div>
       <div class="buttons">
         <button class="btn btn-outline-success">+</button>
-        <button class="btn btn-outline-warning">Log out</button>
+        <button class="btn btn-outline-warning" @click="handleClick">Log out</button>
       </div>
     </div>
   </nav>
@@ -15,10 +15,29 @@
 
 <script>
 import getUsers from "../composable/getUsers";
+import LogoutUser from "../composable/LogoutUser"
+import { useRouter } from 'vue-router'
+import { watch } from '@vue/runtime-core'
 export default {
   setup() {
+    const {logout, error} = LogoutUser()
     const { user } = getUsers();
-    return { user };
+    const router = useRouter()
+
+    watch(user, () => {
+      if (!user.value) {
+        router.push({ name: 'Welcome' })
+      }
+    })
+
+    const handleClick  = async () => {
+      await logout()
+      if (!error.value) {
+        console.log('user logged out');
+      }
+    }
+
+    return { user, handleClick };
   },
 };
 </script>
