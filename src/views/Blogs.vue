@@ -12,12 +12,16 @@
     </div>
   </nav>
   <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
-    <div class="card" style="width: 18rem;">
+    <div class="card text-dark bg-light mb-2 p-2" style="width: 30rem;">
+        <h5>{{blog.userName}}</h5>
       <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">{{blog.title}}</h5>
-        <p>{{blog.createdAt}}</p>
-        <p class="card-text">{{blog.content}}</p>
+        <h3 class="card-title">{{blog.title}}</h3>
+        <p class="time">{{blog.createdAt}}</p>
+        <q class="card-text">{{blog.content}}</q><br>
+        <div class="tags" v-for="tag in blog.tags" :key="tag">
+        <p class="tag">#{{tag}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -79,6 +83,7 @@ export default {
 .navBar {
   background: rgb(33, 37, 41);
   width: 100vw;
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -98,5 +103,13 @@ export default {
 }
 .SingleBlog {
   margin-top: 5%;
+  margin-left: 10%;
+}
+.time{
+  font-size: 10px;
+  color: #555;
+}
+.tags {
+  display: inline-block;
 }
 </style>
