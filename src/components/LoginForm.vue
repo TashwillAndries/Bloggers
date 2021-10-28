@@ -1,11 +1,15 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <input type="email" required placeholder="email" v-model="email" />
-    <input type="password" required placeholder="password" v-model="password" />
+    <div class="input-group input-group-lg">
+      <input type="email" required placeholder="email" v-model="email" class="form-control shadow-none">
+    </div>
+    <div class="input-group input-group-lg">
+      <input type="password" required placeholder="password" v-model="password" class="form-control shadow-none">
+    </div>
     <div class="error">
       {{ error }}
     </div>
-    <button class="btn btn-info p-2 px-5">Login</button>
+    <button class="btn btn-success p-2 px-5">Login</button>
   </form>
 </template>
 
@@ -31,4 +35,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+button {
+  width: 260px;
+}
+</style>
