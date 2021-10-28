@@ -22,10 +22,9 @@
       <div class="input-group input-group-lg">
         <input
           type="text"
-          placeholder="Tags"
+          placeholder="Tags (press enter to submit tag)"
           v-model="tag"
           @keydown.enter.prevent="handleKeydown"
-          required
           class="form-control shadow-none"
         />
       </div>
@@ -78,6 +77,7 @@ export default {
         await addDoc({
           title: title.value,
           content: content.value,
+          tags: tags.value,
           userId: user.value.uid,
           userName: user.value.displayName,
           coverUrl: url.value,
