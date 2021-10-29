@@ -6,19 +6,31 @@
         <p class="displayName">{{ user.displayName }}</p>
       </div>
       <div class="buttons">
-        <button class="btn btn-outline-success">+</button>
+        <button class="btn btn-outline-success" @click="toggleModal">+</button>
         <button class="btn btn-outline-warning">Log out</button>
       </div>
     </div>
   </nav>
+  <div>
+    <Modal @close="toggleModal" :modalActive="modalActive" class="modal-style">
+      <div class="modal-stuff"></div>
+    </Modal>
+  </div>
 </template>
 
 <script>
 import getUsers from "../composable/getUsers";
+import { ref } from "@vue/reactivity";
+import Modal from "../components/Modal.vue";
 export default {
+  components: { Modal },
   setup() {
     const { user } = getUsers();
-    return { user };
+    const modalActive = ref(false);
+    const toggleModal = () => {
+      modalActive.value = !modalActive.value;
+    };
+    return { modalActive, user, toggleModal };
   },
 };
 </script>
@@ -52,5 +64,8 @@ export default {
 }
 .buttons button {
   margin-left: 10px;
+}
+.modal-style {
+  margin-bottom: 25px;
 }
 </style>

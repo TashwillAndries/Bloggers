@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Welcome from "../views/Welcome.vue";
 import Blogs from "../views/Blogs.vue";
-import Create from "../views/CreatePost.vue";
 import { projectAuth } from "../firebase/config";
 
 const requireAuth = (to, from, next) => {
@@ -34,11 +33,6 @@ const routes = [
     name: "Blogs",
     component: Blogs,
     beforeEnter: requireAuth,
-  },
-  {
-    path: "/createpost",
-    name: "Create",
-    component: Create,
   },
 ];
 
