@@ -7,14 +7,32 @@
       </div>
       <div class="buttons">
         <button class="btn btn-outline-success" @click="toggleModal">+</button>
-        <button class="btn btn-outline-warning">Log out</button>
+        <button class="btn btn-outline-warning" @click="handleClick">
+          Log out
+        </button>
       </div>
     </div>
   </nav>
   <div>
-    <Modal @close="toggleModal" :modalActive="modalActive" class="modal-style">
+    <Modal @close="toggleModal" :modalActive="modalActive">
       <div class="modal-stuff"></div>
     </Modal>
+  </div>
+
+  <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
+    <div class="card text-dark bg-light mb-2 p-2" style="width: 30rem;">
+      <h5>{{ blog.userName }}</h5>
+      <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
+      <div class="card-body">
+        <h3 class="card-title">{{ blog.title }}</h3>
+        <p class="time">{{ blog.createdAt }}</p>
+        <q class="card-text">{{ blog.content }}</q
+        ><br />
+        <div class="tags" v-for="tag in blog.tags" :key="tag">
+          <p class="tag">#{{ tag }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -22,17 +40,57 @@
 import getUsers from "../composable/getUsers";
 import { ref } from "@vue/reactivity";
 import Modal from "../components/Modal.vue";
-import LogoutUsers from "../composable/LogoutUser";
+import LogoutUser from "../composable/LogoutUser";
+import { useRouter } from "vue-router";
+import getBlogs from "../composable/getBlogs";
+import { computed, watch } from "@vue/runtime-core";
+import { formatDistanceToNow } from "date-fns";
 export default {
   components: { Modal },
   setup() {
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
+    const router = useRouter();
+    const { blogs, err, fetch } = getBlogs();
     const modalActive = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
     };
-    return { modalActive, user, toggleModal };
+
+    const formattedDocs = computed(() => {
+      if (blogs.value) {
+        return blogs.value.map((post) => {
+          let time = formatDistanceToNow(post.createdAt.toDate());
+          return { ...post, createdAt: time };
+        });
+      }
+    });
+
+    fetch();
+
+    watch(user, () => {
+      if (!user.value) {
+        router.push({ name: "Welcome" });
+      }
+    });
+
+    const handleClick = async () => {
+      await logout();
+      if (!error.value) {
+        console.log("user logged out");
+      }
+    };
+
+    return {
+      user,
+      handleClick,
+      blogs,
+      err,
+      formattedDocs,
+      modalActive,
+      user,
+      toggleModal,
+    };
   },
 };
 </script>
@@ -68,7 +126,15 @@ export default {
 .buttons button {
   margin-left: 10px;
 }
-.modal-style {
-  margin-bottom: 25px;
+.SingleBlog {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+.time {
+  font-size: 10px;
+  color: #555;
+}
+.tags {
+  display: inline-block;
 }
 </style>

@@ -33,7 +33,7 @@ const routes = [
     name: "Blogs",
     component: Blogs,
     beforeEnter: requireAuth,
-  },
+  }
 ];
 
 const router = createRouter({

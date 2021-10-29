@@ -80,6 +80,8 @@ export default {
     const file = ref(null);
     const fileError = ref(null);
     const isPending = ref(false);
+    const tag = ref("");
+    const tags = ref([]);
 
     const handleSubmit = async () => {
       if (file.value) {
@@ -90,6 +92,7 @@ export default {
           content: content.value,
           userId: user.value.uid,
           userName: user.value.displayName,
+          tags: tags.value,
           coverUrl: url.value,
           filePath: filePath.value,
           createdAt: timestamp(),
@@ -114,7 +117,15 @@ export default {
       }
     };
 
+    const handlekeydown = () => {
+      if (!tags.value.includes(tag.value)) {
+        tag.value = tag.value.replace(/\s/, "");
+        tags.value.push(tag.value);
+      }
+    };
+
     return {
+      handlekeydown,
       title,
       content,
       handleSubmit,
@@ -122,6 +133,8 @@ export default {
       fileError,
       isPending,
       close,
+      tag,
+      tags,
     };
   },
 };
