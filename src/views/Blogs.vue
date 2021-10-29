@@ -22,10 +22,11 @@
 import getUsers from "../composable/getUsers";
 import { ref } from "@vue/reactivity";
 import Modal from "../components/Modal.vue";
+import LogoutUsers from "../composable/LogoutUser";
 export default {
   components: { Modal },
   setup() {
-    const {logout, error} = LogoutUser()
+    const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const modalActive = ref(false);
     const toggleModal = () => {
