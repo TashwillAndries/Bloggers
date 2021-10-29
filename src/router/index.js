@@ -34,12 +34,7 @@ const routes = [
     name: "Blogs",
     component: Blogs,
     beforeEnter: requireAuth,
-  },
-  {
-    path: "/createpost",
-    name: "Create",
-    component: Create,
-  },
+  }
 ];
 
 const router = createRouter({
