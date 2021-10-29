@@ -20,15 +20,20 @@
   </div>
 
   <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
-    <div class="card text-dark bg-light mb-2 p-2" style="width: 30rem;">
+    <div class="card text-dark bg-light mb-2 p-1" style="width: 30rem;">
+      <div class="blog-name-time">
       <h5>{{ blog.userName }}</h5><p class="time">{{ blog.createdAt }}</p>
+      </div>
       <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
-      <div class="card-body">
+      <div class="card-body p-1">
         <h3 class="card-title">{{ blog.title }}</h3>
         <q class="card-text">{{ blog.content }}</q
-        ><br />
+        ><br/>
         <div class="tags" v-for="tag in blog.tags" :key="tag">
           <p class="tag">#{{ tag }}</p>
+        </div>
+        <div class="like-comment">
+        <p><i class="far fa-heart"></i></p><p><i class="fas fa-comments"></i></p>
         </div>
       </div>
     </div>
@@ -50,7 +55,7 @@ export default {
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
-    const { blogs, err, fetch } = getBlogs();
+    const { blogs, err, } = getBlogs('blogs');
     const modalActive = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
@@ -64,8 +69,6 @@ export default {
         });
       }
     });
-
-    fetch();
 
     watch(user, () => {
       if (!user.value) {
@@ -135,5 +138,14 @@ export default {
 }
 .tags {
   display: inline-block;
+}
+.blog-name-time {
+  display: flex;
+  justify-content: space-between;
+}
+.like-comment {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
 }
 </style>

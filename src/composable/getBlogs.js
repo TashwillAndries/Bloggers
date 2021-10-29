@@ -1,26 +1,33 @@
 import { projectFire } from "../firebase/config";
 import { ref } from "@vue/reactivity";
+import { watchEffect } from "@vue/runtime-core";
 
-const getBlogs = () => {
-  const blogs = ref([]);
-  const err = ref(null);
+const getCollection = (collection) => {
+    const blogs = ref(null)
+    const err = ref(null)
 
-  const fetch = async () => {
-    try {
-      const res = await projectFire
-        .collection("blogs")
-        .orderBy("createdAt", "desc")
-        .get();
+    let collectionRef = projectFire.collection(collection)
+    .orderBy('createdAt', 'desc')
 
-      blogs.value = res.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
-      });
-    } catch (error) {
-      err.value = error.message;
-      console.log(err.value);
-    }
-  };
-  return { blogs, err, fetch };
-};
+    const unSub = collectionRef.onSnapshot((snap) => {
+        let results = []
+        snap.docs.forEach((doc) => {
+            doc.data().createdAt && results.push({...doc.data(), id: doc.id})
+        })
+        blogs.value = results
+        err.value = null
+    }, (error) => {
+        console.log(error.message)
+        blogs.value = null
+        err.value = 'Could not fetch data'
+    })
 
-export default getBlogs;
+    watchEffect((onInvalidate) => {
+        onInvalidate(() => unSub())
+    })
+
+
+    return{ blogs, err }
+}
+
+export default getCollection
