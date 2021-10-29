@@ -21,11 +21,10 @@
 
   <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
     <div class="card text-dark bg-light mb-2 p-2" style="width: 30rem;">
-      <h5>{{ blog.userName }}</h5>
+      <h5>{{ blog.userName }}</h5><p class="time">{{ blog.createdAt }}</p>
       <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
       <div class="card-body">
         <h3 class="card-title">{{ blog.title }}</h3>
-        <p class="time">{{ blog.createdAt }}</p>
         <q class="card-text">{{ blog.content }}</q
         ><br />
         <div class="tags" v-for="tag in blog.tags" :key="tag">
