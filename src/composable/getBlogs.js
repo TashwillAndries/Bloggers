@@ -3,7 +3,7 @@ import { ref } from "@vue/reactivity";
 import { watchEffect } from "@vue/runtime-core";
 
 const getCollection = (collection) => {
-    const blogs = ref(null)
+    const blogs = ref([])
     const err = ref(null)
 
     let collectionRef = projectFire.collection(collection)
@@ -11,7 +11,7 @@ const getCollection = (collection) => {
 
     const unSub = collectionRef.onSnapshot((snap) => {
         let results = []
-        snap.docs.forEach((doc) => {
+        snap.docs.map((doc) => {
             doc.data().createdAt && results.push({...doc.data(), id: doc.id})
         })
         blogs.value = results

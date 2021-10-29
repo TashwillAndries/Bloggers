@@ -38,6 +38,7 @@
       </div>
     </div>
   </div>
+  <TagFilter :blogs="blogs" />
 </template>
 
 <script>
@@ -49,8 +50,10 @@ import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
 import { formatDistanceToNow } from "date-fns";
+import TagFilter from "../components/TagFilter.vue"
+
 export default {
-  components: { Modal },
+  components: { Modal, TagFilter },
   setup() {
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
@@ -92,6 +95,7 @@ export default {
       modalActive,
       user,
       toggleModal,
+      TagFilter
     };
   },
 };
