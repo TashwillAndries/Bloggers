@@ -145,7 +145,7 @@ export default {
   width: 50px;
 }
 .modal-inner {
-  position: absolute;
+  position: fixed;
   left: 850px;
   margin-top: 70px;
   background: rgba(73, 65, 65, 0.705);

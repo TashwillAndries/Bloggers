@@ -22,7 +22,12 @@
   <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
     <div class="card text-dark bg-light mb-2 p-2" style="width: 30rem;">
       <h5>{{ blog.userName }}</h5>
-      <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
+      <img
+        class="card-img-top"
+        style="height: 25%"
+        :src="blog.coverUrl"
+        alt="Card image cap"
+      />
       <div class="card-body">
         <h3 class="card-title">{{ blog.title }}</h3>
         <p class="time">{{ blog.createdAt }}</p>
@@ -101,10 +106,12 @@ export default {
   text-decoration: none;
   font-size: 20px;
 }
+
 .displayName {
   color: white;
   font-size: 20px;
 }
+
 .navBar {
   background: rgb(33, 37, 41);
   width: 100vw;
