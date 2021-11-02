@@ -58,7 +58,6 @@ export default {
         };
         
         load()
-        console.log("Ko", userBlogs);
 
         watch(user, () => {
         if (!user.value) {
@@ -66,14 +65,7 @@ export default {
         }
         });
 
-        const handleClick = async () => {
-            await logout();
-            if (!error.value) {
-                console.log("user logged out");
-            }
-        };
-
-        return { userBlogs, user, error, modalActive, user, toggleModal, handleClick }
+        return { userBlogs, user, error, modalActive, user, toggleModal }
     }
 }
 </script>
