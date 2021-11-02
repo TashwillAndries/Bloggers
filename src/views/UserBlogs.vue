@@ -1,12 +1,11 @@
 <template>
-  <nav class="navBar">
+    <nav class="navBar">
     <div class="container">
       <div class="headers">
         <router-link class="head" :to="{ name: 'Blogs' }">Welcome</router-link>
         <p class="displayName">{{ user.displayName }}</p>
       </div>
       <div class="buttons">
-        <router-link :to="{ name: 'Userblogs' }"><button class="btn btn-outline-success">My Blogs</button></router-link>
         <button class="btn btn-outline-success" @click="toggleModal">+</button>
         <button class="btn btn-outline-warning" @click="handleClick">
           Log out
@@ -14,16 +13,17 @@
       </div>
     </div>
   </nav>
+
   <div>
     <Modal @close="toggleModal" :modalActive="modalActive">
       <div class="modal-stuff"></div>
     </Modal>
   </div>
 
-  <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
+  <div class="SingleBlog" v-for="blog in userBlogs" :key="blog">
     <div class="card text-dark bg-light mb-2 p-1" style="width: 30rem;">
       <div class="blog-name-time">
-      <h5>{{ blog.userName }}</h5><p class="time">{{ blog.createdAt }}</p>
+      <h5>{{ blog.userName }}</h5>
       </div>
       <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
       <div class="card-body p-1">
@@ -33,70 +33,49 @@
         <div class="tags" v-for="tag in blog.tags" :key="tag">
           <p class="tag">#{{ tag }}</p>
         </div>
-        <div class="like-comment">
-        <p><i class="far fa-heart"></i></p><p><i class="fas fa-comments"></i></p>
-        </div>
       </div>
     </div>
   </div>
+
+  <div class="error">{{error}}</div>
 </template>
 
 <script>
+import getUserBlogs from '../composable/getUserBlogs'
 import getUsers from "../composable/getUsers";
 import { ref } from "@vue/reactivity";
 import Modal from "../components/Modal.vue";
-import LogoutUser from "../composable/LogoutUser";
-import { useRouter } from "vue-router";
-import getBlogs from "../composable/getBlogs";
-import { computed, watch } from "@vue/runtime-core";
-import { formatDistanceToNow } from "date-fns";
+import {watch} from "@vue/runtime-core"
 
 export default {
-  components: { Modal},
-  setup() {
-    const { logout, error } = LogoutUser();
-    const { user } = getUsers();
-    const router = useRouter();
-    const { blogs, err, } = getBlogs('blogs');
-    const modalActive = ref(false);
-    const toggleModal = () => {
-      modalActive.value = !modalActive.value;
-    };
+    components: {  Modal },
+    setup() {
+        const { user } = getUsers();
+        const modalActive = ref(false);
+        const { userBlogs, error, load } = getUserBlogs();
+        const toggleModal = () => {
+        modalActive.value = !modalActive.value;
+        };
+        
+        load()
+        console.log("Ko", userBlogs);
 
-    const formattedDocs = computed(() => {
-      if (blogs.value) {
-        return blogs.value.map((post) => {
-          let time = formatDistanceToNow(post.createdAt.toDate());
-          return { ...post, createdAt: time };
+        watch(user, () => {
+        if (!user.value) {
+            router.push({ name: "Welcome" });
+        }
         });
-      }
-    });
 
-    watch(user, () => {
-      if (!user.value) {
-        router.push({ name: "Welcome" });
-      }
-    });
+        const handleClick = async () => {
+            await logout();
+            if (!error.value) {
+                console.log("user logged out");
+            }
+        };
 
-    const handleClick = async () => {
-      await logout();
-      if (!error.value) {
-        console.log("user logged out");
-      }
-    };
-
-    return {
-      user,
-      handleClick,
-      blogs,
-      err,
-      formattedDocs,
-      modalActive,
-      user,
-      toggleModal
-    };
-  },
-};
+        return { userBlogs, user, error, modalActive, user, toggleModal, handleClick }
+    }
+}
 </script>
 
 <style scoped>
