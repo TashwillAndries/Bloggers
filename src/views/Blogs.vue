@@ -33,10 +33,15 @@
           <p class="tag">#{{ tag }}</p>
         </div>
         <div class="like-comment">
-        <p><i class="far fa-heart"></i></p><p><i class="fas fa-comments"></i></p>
+          <p><i class="fas fa-heart"></i></p><p @click="toggleModal2"><i class="fas fa-comments"></i></p>
         </div>
       </div>
     </div>
+  </div>
+  <div>
+    <Comment @close="toggleModal2" :modalActive2="modalActive2">
+      <div class="modal-stuff"></div>
+    </Comment>
   </div>
 </template>
 
@@ -48,17 +53,22 @@ import LogoutUser from "../composable/LogoutUser";
 import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
+import Comment from '../components/Comment.vue'
 import { formatDistanceToNow } from "date-fns";
 export default {
-  components: { Modal },
+  components: { Modal, Comment },
   setup() {
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
     const { blogs, err, } = getBlogs('blogs');
     const modalActive = ref(false);
+    const modalActive2 = ref(false)
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
+    };
+    const toggleModal2 = () => {
+      modalActive2.value = !modalActive2.value;
     };
 
     const formattedDocs = computed(() => {
@@ -90,8 +100,10 @@ export default {
       err,
       formattedDocs,
       modalActive,
+      modalActive2,
       user,
       toggleModal,
+      toggleModal2,
     };
   },
 };
