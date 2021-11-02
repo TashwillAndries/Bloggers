@@ -2,7 +2,7 @@
   <transition name="modal-animation">
     <div v-show="modalActive" class="modalName">
       <transition name="modal-animation-inner">
-        <div class="modal-inner">
+        <div class="modal-inner p-3">
           <i @click="close" class="far fa-times-circle"></i>
           <form @submit.prevent="handleSubmit">
             <h4>Create Blog Post</h4>
@@ -42,13 +42,13 @@
             </div>
             <div class="error">{{ fileError }}</div>
 
-            <button v-if="!isPending" class="btn btn-success p-2 px-5 ml-5">
+            <button v-if="!isPending" class="btn btn-success btn-sm p-2 px-3 round-top round-bottom">
               Create Post
             </button>
             <button
               v-if="isPending"
               disabled
-              class="btn btn-success p-2 px-5 text-center"
+              class="btn btn-success btn-sm  p-2 px-3 round-top round-bottom text-center"
             >
               Saving...
             </button>
@@ -121,6 +121,7 @@ export default {
       if (!tags.value.includes(tag.value)) {
         tag.value = tag.value.replace(/\s/, "");
         tags.value.push(tag.value);
+        tag.value = ""
       }
     };
 
@@ -147,10 +148,14 @@ export default {
 .modal-inner {
   position: fixed;
   left: 850px;
-  margin-top: 70px;
-  background: rgba(73, 65, 65, 0.705);
+  margin-top: 10px;
+  border-radius: 25px;
+  background: rgb(236, 233, 233);
 }
 .inputs {
   margin-bottom: 15px;
+}
+.pill {
+  display: inline-block;
 }
 </style>
