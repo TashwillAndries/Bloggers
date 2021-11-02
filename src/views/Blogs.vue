@@ -34,7 +34,12 @@
           <p class="tag">#{{ tag }}</p>
         </div>
         <div class="like-comment">
-          <p><i class="far fa-heart"></i></p>
+          <p v-if="blog.liked" @click="toggleLike(blog)">
+            <i class="fas fa-heart"></i>
+          </p>
+          <p v-if="!blog.liked" @click="toggleLike(blog)">
+            <i v-bind:class="heart"></i>
+          </p>
           <p><i class="fas fa-comments"></i></p>
         </div>
       </div>
@@ -51,9 +56,13 @@ import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
 import { formatDistanceToNow } from "date-fns";
+import { projectFire } from "../firebase/config";
+
 export default {
   components: { Modal },
   setup() {
+    const heart = "far fa-heart";
+    const showlikes = ref(false);
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
@@ -62,7 +71,6 @@ export default {
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
     };
-
     const formattedDocs = computed(() => {
       if (blogs.value) {
         return blogs.value.map((post) => {
@@ -85,6 +93,16 @@ export default {
       }
     };
 
+    const toggleLike = (blog) => {
+      projectFire
+        .collection("blogs")
+        .doc(blog.id)
+        .update({
+          liked: !blog.liked,
+        });
+      console.log(blog);
+    };
+
     return {
       user,
       handleClick,
@@ -94,6 +112,9 @@ export default {
       modalActive,
       user,
       toggleModal,
+      showlikes,
+      heart,
+      toggleLike,
     };
   },
 };
@@ -151,5 +172,8 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 20px;
+}
+.liked-icon {
+  margin-right: 55%;
 }
 </style>

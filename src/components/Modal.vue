@@ -42,7 +42,10 @@
             </div>
             <div class="error">{{ fileError }}</div>
 
-            <button v-if="!isPending" class="btn btn-success btn-sm p-2 px-3 round-top round-bottom">
+            <button
+              v-if="!isPending"
+              class="btn btn-success btn-sm p-2 px-3 round-top round-bottom"
+            >
               Create Post
             </button>
             <button
@@ -96,6 +99,7 @@ export default {
           coverUrl: url.value,
           filePath: filePath.value,
           createdAt: timestamp(),
+          liked: false,
         });
         isPending.value = false;
         if (!error.value) {
@@ -121,7 +125,7 @@ export default {
       if (!tags.value.includes(tag.value)) {
         tag.value = tag.value.replace(/\s/, "");
         tags.value.push(tag.value);
-        tag.value = ""
+        tag.value = "";
       }
     };
 
