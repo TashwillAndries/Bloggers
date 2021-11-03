@@ -70,7 +70,7 @@ export default {
     };
     const toggleModal2 = (blog) => {
       modalActive2.value = !modalActive2.value;
-      console.log(blog.id);
+      // console.log(blog.id);
     };
 
     const formattedDocs = computed(() => {
