@@ -84,6 +84,7 @@ export default {
           if (!error.value) {
           console.log("user logged out");
           }
+          router.push({name: "Welcome"})
         };
 
         return { userBlogs, user, error, modalActive, user, toggleModal, handleDelete, handleClick }

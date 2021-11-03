@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome container">
+  <div class="welcome">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
       <div class="container">
         <router-link class="navbar-brand" :to="{ name: 'Welcome' }"
@@ -26,12 +26,12 @@
         </div>
       </div>
     </nav>
-    <div v-if="showLogin">
-      <h2 class="mt-5">Login</h2>
+    <div v-if="showLogin" style="margin-top: 150px;">
+      <h2 class="mt-5" style="color: white;">Login</h2>
       <LoginForm @login="enterBlog" />
     </div>
-    <div v-else>
-      <h2 class="mt-5">Signup</h2>
+    <div v-else style="margin-top: 150px;">
+      <h2 class="mt-5" style="color: white;">Signup</h2>
       <SignupForm @signup="enterBlog" />
     </div>
   </div>
@@ -57,8 +57,13 @@ export default {
 
 <style>
 .welcome {
+  background-image: url(../assets/back.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
   text-align: center;
   padding: 20px 0;
+  height: 100vh;
+  width: 100vw;
 }
 .welcome form {
   width: 300px;

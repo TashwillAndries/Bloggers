@@ -113,6 +113,7 @@ export default {
       if (!error.value) {
         console.log("user logged out");
       }
+      router.push({name: "Welcome"})
     };
 
     const toggleLike = (blog) => {

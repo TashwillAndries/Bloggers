@@ -39,6 +39,7 @@ const routes = [
     path: "/user-blogs",
     name: "Userblogs",
     component: Userblogs,
+    beforeEnter: requireAuth,
   },
 ];
 
