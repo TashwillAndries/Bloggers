@@ -33,6 +33,8 @@
         <div class="tags" v-for="tag in blog.tags" :key="tag">
           <p class="tag">#{{ tag }}</p>
         </div>
+        <br>
+        <button @click="handleDelete(blog)">Delete Blog</button>
       </div>
     </div>
   </div>
@@ -45,11 +47,15 @@ import getUserBlogs from '../composable/getUserBlogs'
 import getUsers from "../composable/getUsers";
 import { ref } from "@vue/reactivity";
 import Modal from "../components/Modal.vue";
-import {watch} from "@vue/runtime-core"
+import {watch} from "@vue/runtime-core";
+import { projectFire } from "../firebase/config"
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
     components: {  Modal },
     setup() {
+        const router = useRouter();
+        const route = useRoute();
         const { user } = getUsers();
         const modalActive = ref(false);
         const { userBlogs, error, load } = getUserBlogs();
@@ -59,13 +65,19 @@ export default {
         
         load()
 
+        const handleDelete = async (blog) => {
+          await projectFire.collection('blogs')
+            .doc(blog.id)
+            .delete()
+        }
+
         watch(user, () => {
         if (!user.value) {
             router.push({ name: "Welcome" });
         }
         });
 
-        return { userBlogs, user, error, modalActive, user, toggleModal }
+        return { userBlogs, user, error, modalActive, user, toggleModal, handleDelete }
     }
 }
 </script>
