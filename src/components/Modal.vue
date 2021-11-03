@@ -42,13 +42,13 @@
             </div>
             <div class="error">{{ fileError }}</div>
 
-            <button v-if="!isPending" class="btn btn-success btn-sm p-2 px-3 round-top round-bottom">
+            <button v-if="!isPending" class="btn btn-primary btn-sm p-2 px-3 round-top round-bottom">
               Create Post
             </button>
             <button
               v-if="isPending"
               disabled
-              class="btn btn-success btn-sm  p-2 px-3 round-top round-bottom text-center"
+              class="btn btn-primary btn-sm  p-2 px-3 round-top round-bottom text-center"
             >
               Saving...
             </button>
@@ -82,6 +82,7 @@ export default {
     const isPending = ref(false);
     const tag = ref("");
     const tags = ref([]);
+    const comments = ref([])
 
     const handleSubmit = async () => {
       if (file.value) {
@@ -96,6 +97,7 @@ export default {
           coverUrl: url.value,
           filePath: filePath.value,
           createdAt: timestamp(),
+          comments: comments.value
         });
         isPending.value = false;
         if (!error.value) {
