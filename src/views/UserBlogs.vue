@@ -45,6 +45,7 @@
 <script>
 import getUserBlogs from '../composable/getUserBlogs'
 import getUsers from "../composable/getUsers";
+import LogoutUser from "../composable/LogoutUser";
 import { ref } from "@vue/reactivity";
 import Modal from "../components/Modal.vue";
 import {watch} from "@vue/runtime-core";
@@ -55,6 +56,7 @@ export default {
     components: {  Modal },
     setup() {
         const router = useRouter();
+        const { logout } = LogoutUser();
         const route = useRoute();
         const { user } = getUsers();
         const modalActive = ref(false);
@@ -77,7 +79,14 @@ export default {
         }
         });
 
-        return { userBlogs, user, error, modalActive, user, toggleModal, handleDelete }
+        const handleClick = async () => {
+          await logout();
+          if (!error.value) {
+          console.log("user logged out");
+          }
+        };
+
+        return { userBlogs, user, error, modalActive, user, toggleModal, handleDelete, handleClick }
     }
 }
 </script>
