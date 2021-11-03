@@ -42,7 +42,10 @@
             </div>
             <div class="error">{{ fileError }}</div>
 
-            <button v-if="!isPending" class="btn btn-primary btn-sm p-2 px-3 round-top round-bottom">
+            <button
+              v-if="!isPending"
+              class="btn btn-primary btn-sm p-2 px-3 round-top round-bottom"
+            >
               Create Post
             </button>
             <button
@@ -82,7 +85,7 @@ export default {
     const isPending = ref(false);
     const tag = ref("");
     const tags = ref([]);
-    const comments = ref([])
+    const comments = ref([]);
 
     const handleSubmit = async () => {
       if (file.value) {
@@ -97,7 +100,8 @@ export default {
           coverUrl: url.value,
           filePath: filePath.value,
           createdAt: timestamp(),
-          comments: comments.value
+          liked: false,
+          comments: comments.value,
         });
         isPending.value = false;
         if (!error.value) {
@@ -123,7 +127,7 @@ export default {
       if (!tags.value.includes(tag.value)) {
         tag.value = tag.value.replace(/\s/, "");
         tags.value.push(tag.value);
-        tag.value = ""
+        tag.value = "";
       }
     };
 
@@ -148,7 +152,7 @@ export default {
   width: 50px;
 }
 .modal-inner {
-  position: absolute;
+  position: fixed;
   left: 850px;
   margin-top: 10px;
   border-radius: 25px;

@@ -6,6 +6,11 @@
         <p class="displayName">{{ user.displayName }}</p>
       </div>
       <div class="buttons">
+        <router-link :to="{ name: 'Userblogs' }"
+          ><button class="btn btn-outline-success">
+            My Blogs
+          </button></router-link
+        >
         <button class="btn btn-outline-success" @click="toggleModal">+</button>
         <button class="btn btn-outline-warning" @click="handleClick">
           Log out
@@ -22,23 +27,34 @@
   <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
     <div class="card text-dark bg-light mb-2 p-1" style="width: 30rem;">
       <div class="blog-name-time">
-      <h5>{{ blog.userName }}</h5><p class="time">{{ blog.createdAt }}</p>
+        <h5>{{ blog.userName }}</h5>
+        <p class="time">{{ blog.createdAt }}</p>
       </div>
       <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
       <div class="card-body p-1">
         <h3 class="card-title">{{ blog.title }}</h3>
         <q class="card-text">{{ blog.content }}</q
-        ><br/>
+        ><br />
         <div class="tags" v-for="tag in blog.tags" :key="tag">
           <p class="tag">#{{ tag }}</p>
         </div>
         <div class="like-comment">
-          <p><i class="fas fa-heart"></i></p><p @click="toggleModal2(blog)"><i class="fas fa-comments"></i></p>
+          <p v-if="blog.liked" @click="toggleLike(blog)">
+            <i class="fas fa-heart"></i>
+          </p>
+          <p v-if="!blog.liked" @click="toggleLike(blog)">
+            <i v-bind:class="heart"></i>
+          </p>
+          <p @click="toggleModal2(blog)"><i class="fas fa-comments"></i></p>
         </div>
       </div>
     </div>
     <div>
-      <Comment @close="toggleModal2" :modalActive2="modalActive2" :doc="blog.id">
+      <Comment
+        @close="toggleModal2"
+        :modalActive2="modalActive2"
+        :doc="blog.id"
+      >
         <div class="modal-stuff"></div>
       </Comment>
     </div>
@@ -53,18 +69,22 @@ import LogoutUser from "../composable/LogoutUser";
 import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
-import Comment from '../components/Comment.vue'
+import Comment from "../components/Comment.vue";
 import { formatDistanceToNow } from "date-fns";
+import { projectFire } from "../firebase/config";
+
 export default {
-  props: ["id"],
   components: { Modal, Comment },
+  props: ["id"],
   setup(props) {
+    const heart = "far fa-heart";
+    const showlikes = ref(false);
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
-    const { blogs, err, } = getBlogs('blogs');
+    const { blogs, err } = getBlogs("blogs");
     const modalActive = ref(false);
-    const modalActive2 = ref(false)
+    const modalActive2 = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
     };
@@ -95,6 +115,15 @@ export default {
       }
     };
 
+    const toggleLike = (blog) => {
+      projectFire
+        .collection("blogs")
+        .doc(blog.id)
+        .update({
+          liked: !blog.liked,
+        });
+    };
+
     return {
       user,
       handleClick,
@@ -105,6 +134,9 @@ export default {
       modalActive2,
       user,
       toggleModal,
+      showlikes,
+      heart,
+      toggleLike,
       toggleModal2,
     };
   },
@@ -117,10 +149,12 @@ export default {
   text-decoration: none;
   font-size: 20px;
 }
+
 .displayName {
   color: white;
   font-size: 20px;
 }
+
 .navBar {
   background: rgb(33, 37, 41);
   width: 100vw;
@@ -161,5 +195,8 @@ export default {
   display: flex;
   justify-content: space-between;
   font-size: 20px;
+}
+.liked-icon {
+  margin-right: 55%;
 }
 </style>
