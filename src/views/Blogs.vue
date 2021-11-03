@@ -40,9 +40,18 @@
           <p v-if="!blog.liked" @click="toggleLike(blog)">
             <i v-bind:class="heart"></i>
           </p>
-          <p><i class="fas fa-comments"></i></p>
+          <p @click="toggleModal2(blog)"><i class="fas fa-comments"></i></p>
         </div>
       </div>
+    </div>
+    <div>
+      <Comment
+        @close="toggleModal2"
+        :modalActive2="modalActive2"
+        :doc="blog.id"
+      >
+        <div class="modal-stuff"></div>
+      </Comment>
     </div>
   </div>
 </template>
@@ -55,12 +64,14 @@ import LogoutUser from "../composable/LogoutUser";
 import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
+import Comment from "../components/Comment.vue";
 import { formatDistanceToNow } from "date-fns";
 import { projectFire } from "../firebase/config";
 
 export default {
-  components: { Modal },
-  setup() {
+  components: { Modal, Comment },
+  props: ["id"],
+  setup(props) {
     const heart = "far fa-heart";
     const showlikes = ref(false);
     const { logout, error } = LogoutUser();
@@ -68,9 +79,15 @@ export default {
     const router = useRouter();
     const { blogs, err } = getBlogs("blogs");
     const modalActive = ref(false);
+    const modalActive2 = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
     };
+    const toggleModal2 = (blog) => {
+      modalActive2.value = !modalActive2.value;
+      console.log(blog.id);
+    };
+
     const formattedDocs = computed(() => {
       if (blogs.value) {
         return blogs.value.map((post) => {
@@ -100,7 +117,6 @@ export default {
         .update({
           liked: !blog.liked,
         });
-      console.log(blog);
     };
 
     return {
@@ -110,11 +126,13 @@ export default {
       err,
       formattedDocs,
       modalActive,
+      modalActive2,
       user,
       toggleModal,
       showlikes,
       heart,
       toggleLike,
+      toggleModal2,
     };
   },
 };
