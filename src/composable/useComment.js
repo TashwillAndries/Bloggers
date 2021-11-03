@@ -10,7 +10,7 @@ const useComment = (collection) => {
     isPending.value = true;
 
     try {
-      await projectFire.collection(collection).add(doc);
+      await projectFire.collection(collection).add(doc.id);
       isPending.value = false;
     } catch (err) {
       console.log(err.message);

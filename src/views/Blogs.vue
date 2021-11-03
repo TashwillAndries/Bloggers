@@ -6,6 +6,11 @@
         <p class="displayName">{{ user.displayName }}</p>
       </div>
       <div class="buttons">
+        <router-link :to="{ name: 'Userblogs' }"
+          ><button class="btn btn-outline-success">
+            My Blogs
+          </button></router-link
+        >
         <button class="btn btn-outline-success" @click="toggleModal">+</button>
         <button class="btn btn-outline-warning" @click="handleClick">
           Log out
