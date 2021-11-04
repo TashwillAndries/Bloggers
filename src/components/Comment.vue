@@ -52,7 +52,7 @@ export default {
               createdAt: timestamp(),
               blogId: props.doc
             })
-            comments.value = ''
+            comment.value = ''
         }
 
         return { close, comment, handleSubmit , error, er, comments }
