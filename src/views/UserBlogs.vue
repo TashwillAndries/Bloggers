@@ -1,33 +1,36 @@
 <template>
+  <div class="full-page">
+      <nav class="navBar">
+      <div class="container">
+        <div class="headers">
+          <router-link class="head" :to="{ name: 'Blogs' }">Welcome</router-link>
+          <p class="displayName">{{ user.displayName }}</p>
+        </div>
+        <div class="buttons">
+          <button class="btn btn-outline-danger" @click="handleClick">
+            Log out
+          </button>
+        </div>
+      </div>
+    </nav>
 
-    <nav class="navBar">
-    <div class="container">
-      <div class="headers">
-        <router-link class="head" :to="{ name: 'Blogs' }">Welcome</router-link>
-        <p class="displayName">{{ user.displayName }}</p>
-      </div>
-      <div class="buttons">
-        <router-link :to="{name: 'Blogs'}">
-        <button class="btn btn-outline-success">Home</button>
-        </router-link>
-        <button class="btn btn-outline-warning" @click="handleClick">
-          Log out
-        </button>
-      </div>
-    </div>
-  </nav>
-  <div class="SingleBlog" v-for="blog in userBlogs" :key="blog">
-    <div class="card text-dark bg-light mb-2 p-1" style="width: 30rem;">
-      <div class="blog-name-time">
-      <h5>{{ blog.userName }}</h5>
-      </div>
-      <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
-      <div class="card-body p-1">
-        <h3 class="card-title">{{ blog.title }}</h3>
-        <q class="card-text">{{ blog.content }}</q
-        ><br/>
-        <div class="tags" v-for="tag in blog.tags" :key="tag">
-          <p class="tag">#{{ tag }}</p>
+    <div class="blog-cards">
+      <div class="SingleBlog" v-for="blog in userBlogs" :key="blog">
+        <div class="card text-dark bg-light mb-2 p-1" style="width: 20rem; margin-top: 10px; box-shadow: 0px 5px 15px black;">
+          <div class="blog-name-time">
+          <h5>{{ blog.userName }}</h5>
+          </div>
+          <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
+          <div class="card-body p-1">
+            <h3 class="card-title">{{ blog.title }}</h3>
+            <q class="card-text">{{ blog.content }}</q
+            ><br/>
+            <div class="tags" v-for="tag in blog.tags" :key="tag">
+              <p class="tag">#{{ tag }}</p>
+            </div>
+            <br>
+            <button class="btn btn-outline-danger" @click="handleDelete(blog)">Delete Blog</button>
+          </div>
         </div>
       </div>
     </div>
@@ -94,7 +97,7 @@ export default {
 }
 
 .full-page {
-  background-image: url("https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg");
+  background-image: url(../assets/user-blog.jpg);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -147,6 +150,7 @@ export default {
   flex-wrap: wrap;
   gap: 30px;
   margin-top: 100px;
+  margin: auto;
 }
 
 h5 {
