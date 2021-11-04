@@ -149,8 +149,8 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 30px;
-  margin-top: 100px;
   margin: auto;
+  margin-top: 100px;
 }
 
 h5 {
