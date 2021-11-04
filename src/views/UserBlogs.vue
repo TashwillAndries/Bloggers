@@ -29,13 +29,11 @@
         <div class="tags" v-for="tag in blog.tags" :key="tag">
           <p class="tag">#{{ tag }}</p>
         </div>
-        <br>
-        <button @click="handleDelete(blog)">Delete Blog</button>
       </div>
     </div>
-  </div>
 
-  <div class="error">{{error}}</div>
+    <div class="error">{{error}}</div>
+  </div>
 </template>
 
 <script>
@@ -94,46 +92,97 @@ export default {
   text-decoration: none;
   font-size: 20px;
 }
+
+.full-page {
+  background-image: url("https://wallpaperboat.com/wp-content/uploads/2020/06/03/42361/aesthetic-anime-01.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  min-height: 100vh;
+}
+
 .displayName {
   color: white;
   font-size: 20px;
 }
+
 .navBar {
   background: rgb(33, 37, 41);
   width: 100vw;
-  z-index: 100;
+  z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
+  box-shadow: 2px 6px 10px black;
 }
+
 .container {
   display: flex;
   justify-content: space-between;
   margin-left: 5%;
   margin-top: 1%;
 }
+
 .headers {
   display: flex;
   gap: 20px;
 }
+
 .buttons button {
   margin-left: 10px;
 }
+
 .SingleBlog {
-  margin-top: 5%;
-  margin-left: 10%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
+
+.blog-cards {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 100px;
+}
+
+h5 {
+  background-color: black;
+  color: white;
+  padding: 5px;
+  width: 100%;
+}
+
+.card img {
+  margin: 5px auto;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
 .time {
   font-size: 10px;
   color: #555;
 }
+
 .tags {
   display: inline-block;
+  margin: 5px 0px;
+  font-weight: bold;
 }
+
+.tag {
+  margin: 0px 5px;
+}
+
 .blog-name-time {
   display: flex;
   justify-content: space-between;
 }
+
 .like-comment {
   display: flex;
   justify-content: space-between;
