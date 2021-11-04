@@ -68,6 +68,7 @@ import useStorage from "../composable/useStorage";
 import useBlogs from "../composable/useBlogs";
 import { timestamp } from "../firebase/config";
 import getUsers from "../composable/getUsers";
+
 export default {
   props: ["modalActive"],
   setup(props, { emit }) {
@@ -107,6 +108,11 @@ export default {
         if (!error.value) {
           console.log("post added");
         }
+        title.value = "";
+        content.value = "";
+        tag.value = "";
+        tags.value = "";
+        close()
       }
       title = ""
       content = ""
