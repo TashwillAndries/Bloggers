@@ -108,6 +108,9 @@ export default {
           console.log("post added");
         }
       }
+      title = ""
+      content = ""
+      close()
     };
     // Allowed file types
     const types = ["image/png", "image/jpeg"];
