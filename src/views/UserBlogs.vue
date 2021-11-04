@@ -7,6 +7,7 @@
           <p class="displayName">{{ user.displayName }}</p>
         </div>
         <div class="buttons">
+          <router-link :to="{ name: 'Blogs' }"><button class="btn btn-outline-info">Home</button></router-link>
           <button class="btn btn-outline-danger" @click="handleClick">
             Log out
           </button>
