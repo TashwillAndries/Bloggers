@@ -1,4 +1,5 @@
 <template>
+
     <nav class="navBar">
     <div class="container">
       <div class="headers">
@@ -6,20 +7,15 @@
         <p class="displayName">{{ user.displayName }}</p>
       </div>
       <div class="buttons">
-        <button class="btn btn-outline-success" @click="toggleModal">+</button>
+        <router-link :to="{name: 'Blogs'}">
+        <button class="btn btn-outline-success">Home</button>
+        </router-link>
         <button class="btn btn-outline-warning" @click="handleClick">
           Log out
         </button>
       </div>
     </div>
   </nav>
-
-  <div>
-    <Modal @close="toggleModal" :modalActive="modalActive">
-      <div class="modal-stuff"></div>
-    </Modal>
-  </div>
-
   <div class="SingleBlog" v-for="blog in userBlogs" :key="blog">
     <div class="card text-dark bg-light mb-2 p-1" style="width: 30rem;">
       <div class="blog-name-time">

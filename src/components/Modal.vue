@@ -153,10 +153,12 @@ export default {
 }
 .modal-inner {
   position: fixed;
-  left: 850px;
-  margin-top: 10px;
+  left: 35%;
+  top: 20%;
+  z-index: 2;
   border-radius: 25px;
   background: rgb(236, 233, 233);
+  box-shadow: 0px 5px 15px black;
 }
 .inputs {
   margin-bottom: 15px;

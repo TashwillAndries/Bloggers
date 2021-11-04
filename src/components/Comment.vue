@@ -42,7 +42,7 @@ export default {
         const { er, comments } = getComments('comments')
         const { err, blogs } = getBlogs('blogs')
 
-        const comment = ref('')
+        const comment = ref(null)
 
         const handleSubmit = async () => {
             await addDoc({
@@ -52,8 +52,9 @@ export default {
               createdAt: timestamp(),
               blogId: props.doc
             })
-            comment.value = ''
+            comments.value = ''
         }
+
         return { close, comment, handleSubmit , error, er, comments }
     }
 }
@@ -62,11 +63,11 @@ export default {
 <style scoped>
 .modal-inner {
   position: fixed;
-  top: 20%;
-  left: 47%;
-  margin-top: 10px;
+  top: 10%;
+  left: 35%;
   border-radius: 25px;
   background: rgb(236, 233, 233);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
 }
 .form {
   display: flex;
@@ -75,11 +76,13 @@ export default {
 .commentWindow{
   background: #ddd;
   width: 100%;
-  height: 200px;
+  height: 150px;
 }
 .comment {
   background: white;
   border-radius: 25px;
   padding: 5px 20px;
+  margin-bottom: 15px;
+  box-shadow: 0px 5px 10px black;
 }
 </style>

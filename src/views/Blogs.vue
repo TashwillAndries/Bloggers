@@ -1,4 +1,5 @@
 <template>
+<div class="fullPage">
   <nav class="navBar">
     <div class="container">
       <div class="headers">
@@ -11,8 +12,8 @@
             My Blogs
           </button></router-link
         >
-        <button class="btn btn-outline-success" @click="toggleModal">+</button>
-        <button class="btn btn-outline-warning" @click="handleClick">
+        <button class="btn btn-outline-info" @click="toggleModal">+</button>
+        <button class="btn btn-outline-danger" @click="handleClick">
           Log out
         </button>
       </div>
@@ -25,7 +26,7 @@
   </div>
 
   <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
-    <div class="card text-dark bg-light mb-2 p-1" style="width: 30rem;">
+    <div class="card text-dark bg-light mb-2 p-1" style="width: 45rem; box-shadow: 0px 5px 15px black;">
       <div class="blog-name-time">
         <h5>{{ blog.userName }}</h5>
         <p class="time">{{ blog.createdAt }}</p>
@@ -39,7 +40,7 @@
           <p class="tag">#{{ tag }}</p>
         </div>
         <div class="like-comment">
-          <p v-if="blog.liked" @click="toggleLike(blog)">
+          <p v-if="blog.liked" @click="toggleLike(blog)" class="likeBtn">
             <i class="fas fa-heart"></i>
           </p>
           <p v-if="!blog.liked" @click="toggleLike(blog)">
@@ -54,11 +55,10 @@
         @close="toggleModal2"
         :modalActive2="modalActive2"
         :doc="blog.id"
-      >
-        <div class="modal-stuff"></div>
-      </Comment>
+      />
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -90,7 +90,6 @@ export default {
     };
     const toggleModal2 = (blog) => {
       modalActive2.value = !modalActive2.value;
-      // console.log(blog.id);
     };
 
     const formattedDocs = computed(() => {
@@ -145,6 +144,15 @@ export default {
 </script>
 
 <style scoped>
+.fullPage {
+  background-image: url(../assets/blogBack.jpeg);
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 .head {
   color: white;
   text-decoration: none;
@@ -163,6 +171,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  box-shadow: 5px 5px 15px black;
 }
 .container {
   display: flex;
@@ -178,8 +187,10 @@ export default {
   margin-left: 10px;
 }
 .SingleBlog {
+  position: relative;
+  left: 25%;
+  margin-bottom: 3%;
   margin-top: 5%;
-  margin-left: 10%;
 }
 .time {
   font-size: 10px;
@@ -197,7 +208,13 @@ export default {
   justify-content: space-between;
   font-size: 20px;
 }
+.like-comment p {
+  cursor: pointer;
+}
 .liked-icon {
   margin-right: 55%;
+}
+.likeBtn{
+  color: red;
 }
 </style>
