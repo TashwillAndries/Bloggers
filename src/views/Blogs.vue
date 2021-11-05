@@ -51,7 +51,7 @@
             <p v-if="!blog.liked" @click="toggleLike(blog)">
               <i v-bind:class="heart"></i>
             </p>
-            <p @click="toggleModal2(blog.id)">
+            <p @click="toggleModal2(blog.id, blog.title)">
               <i class="fas fa-comments"></i>
             </p>
           </div>
@@ -62,6 +62,7 @@
           @close="toggleModal2"
           :modalActive2="modalActive2"
           :id="blogId"
+          :title="blogtitle"
         />
       </div>
     </div>
@@ -86,6 +87,7 @@ export default {
     const heart = "far fa-heart";
     const showlikes = ref(false);
     const blogId = ref("");
+    const blogtitle = ref("");
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
@@ -105,8 +107,9 @@ export default {
         model.style.backgroundColor = "rgba(0,0,0,0.5)";
       } else document.body.style.overflow = "auto";
     };
-    const toggleModal2 = (id) => {
+    const toggleModal2 = (id, title) => {
       blogId.value = id;
+      blogtitle.value = title;
       modalActive2.value = !modalActive2.value;
       let model2 = document.querySelectorAll(".modalName")[1];
       if (model2.style.display == "none") {
@@ -162,6 +165,7 @@ export default {
       toggleLike,
       toggleModal2,
       blogId,
+      blogtitle,
       props,
     };
   },

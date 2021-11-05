@@ -2,22 +2,34 @@
   <transition name="modal-animation">
     <div v-show="modalActive2" class="modalName">
       <transition name="modal-animation-inner">
-        <div class="modal-inner p-3" v-if="blogs">
+        <div>
+          <div class="modal-inner p-3" v-if="blogs">
             <i @click="close" class="far fa-times-circle"></i>
             <div class="Container" v-for="doc in formatted" :key="doc.id">
               <h4 v-if="doc.blogTitle === props.title">{{doc.blogTitle}}</h4>
               <div class="comment" v-if="doc.commentId === props.id">
-              <h5>{{doc.userName}}</h5>
-              <p>{{doc.comment}}</p>
+                <h5>{{doc.userName}}</h5>
+                <p>{{doc.comment}}</p>
               </div>
             </div>
             <div class="form">
               <div class="input-group input-group-lg">
-                <input type="text" required placeholder="Comment..." v-model="comment" class="form-control shadow-none">
+                <input
+                  type="text"
+                  required
+                  placeholder="Comment..."
+                  v-model="comment"
+                  class="form-control shadow-none"
+                />
               </div>
-              <button class="btn btn-primary" @click.prevent="handleSubmit">Send</button>
-              <div class="error">{{error}}</div>
+              <button class="btn btn-primary" @click.prevent="handleSubmit">
+                Send
+              </button>
             </div>
+            <div class="error">
+              {{ error }}
+            </div>
+          </div>
         </div>
       </transition>
     </div>
@@ -25,49 +37,50 @@
 </template>
 
 <script>
-import { ref, computed } from '@vue/reactivity';
-import { timestamp } from '../firebase/config'
-import getUsers from '../composable/getUsers'
-import getBlogs from '../composable/getBlogs'
-import useBlogs from '../composable/useBlogs'
-import { formatDistanceToNow } from 'date-fns'
+import { ref, computed } from "@vue/reactivity";
+import { timestamp } from "../firebase/config";
+import getUsers from "../composable/getUsers";
+import getBlogs from "../composable/getBlogs";
+import useBlogs from "../composable/useBlogs";
+import { formatDistanceToNow } from "date-fns";
 
 export default {
-    props: ["modalActive2", "id","title"],
-    setup(props, { emit }) {
-        const close = () => {
-            emit("close");
-        };
+  props: ["modalActive2", "id", "title"],
+  setup(props, { emit }) {
+    const close = () => {
+      emit("close");
+    };
+    console.log(props);
+    const { error, addDoc } = useBlogs("comments");
+    const { user } = getUsers();
+    const { blogs } = getBlogs("comments");
 
-        const { error, addDoc } = useBlogs('comments');
-        const { user } = getUsers()
-        const { blogs } = getBlogs('comments')
+    const comment = ref("");
 
-        const comment = ref("")
+    const handleSubmit = async () => {
+      await addDoc({
+        userName: user.value.displayName,
+        userId: user.value.uid,
+        comment: comment.value,
+        createdAt: timestamp(),
+        commentId: props.id,
+        blogTitle: props.title,
+      });
+      comment.value = "";
+    };
 
-        const handleSubmit = async () => {
-            await addDoc({
-              userName: user.value.displayName,
-              userId: user.value.uid,
-              comment: comment.value,
-              createdAt: timestamp(),
-              commentId: props.id
-            })
-            comment.value = ''
-        }
-
-        const formatted = computed(() => {
-          if (blogs.value) {
-            return blogs.value.map((doc) => {
-              const created = formatDistanceToNow(doc.createdAt.toDate());
-              return { ...doc, createdAt: created };
-            });
-          }
+    const formatted = computed(() => {
+      if (blogs.value) {
+        return blogs.value.map((doc) => {
+          const created = formatDistanceToNow(doc.createdAt.toDate());
+          return { ...doc, createdAt: created };
         });
+      }
+    });
 
-        return { close, error, blogs, formatted, props, comment, handleSubmit }
-    }
-}
+    return { close, error, blogs, formatted, props, comment, handleSubmit };
+  },
+};
 </script>
 
 <style scoped>
@@ -93,7 +106,7 @@ h4 {
   display: flex;
   gap: 10px;
 }
-.commentWindow{
+.commentWindow {
   background: #ddd;
   width: 100%;
   height: 150px;
