@@ -87,9 +87,29 @@ export default {
     const modalActive2 = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
+      let model = document.querySelectorAll(".modalName")[0]
+      if (model.style.display == 'none' ) {
+        document.body.style.overflow = 'hidden';
+        model.style.position = "fixed";
+        model.style.zIndex = "1000";
+        model.style.top = "0";
+        model.style.width = "100vw";
+        model.style.height = "100vh";
+        model.style.backgroundColor = "rgba(0,0,0,0.5)";
+      } else document.body.style.overflow = 'auto';
     };
     const toggleModal2 = (blog) => {
       modalActive2.value = !modalActive2.value;
+      let model2 = document.querySelectorAll(".modalName")[1]
+      if (model2.style.display == 'none' ) {
+        document.body.style.overflow = 'hidden';
+        model2.style.position = "fixed";
+        model2.style.zIndex = "1000";
+        model2.style.top = "0";
+        model2.style.width = "100vw";
+        model2.style.height = "100vh";
+        model2.style.backgroundColor = "rgba(0,0,0,0.5)";
+      } else document.body.style.overflow = 'auto';
     };
 
     const formattedDocs = computed(() => {
@@ -167,7 +187,7 @@ export default {
 .navBar {
   background: rgb(33, 37, 41);
   width: 100vw;
-  z-index: 100;
+  z-index: 10000;
   position: fixed;
   top: 0;
   left: 0;

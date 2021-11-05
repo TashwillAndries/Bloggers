@@ -63,11 +63,17 @@ export default {
 <style scoped>
 .modal-inner {
   position: fixed;
-  top: 10%;
+  top: 20%;
   left: 35%;
+  max-height: 350px;
+  overflow-y: auto;
   border-radius: 25px;
   background: rgb(236, 233, 233);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-inner i:hover {
+  cursor: pointer;
 }
 .form {
   display: flex;
