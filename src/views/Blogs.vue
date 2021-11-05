@@ -1,64 +1,71 @@
 <template>
-<div class="fullPage">
-  <nav class="navBar">
-    <div class="container">
-      <div class="headers">
-        <router-link class="head" :to="{ name: 'Blogs' }">Welcome</router-link>
-        <p class="displayName">{{ user.displayName }}</p>
-      </div>
-      <div class="buttons">
-        <router-link :to="{ name: 'Userblogs' }"
-          ><button class="btn btn-outline-success">
-            My Blogs
-          </button></router-link
-        >
-        <button class="btn btn-outline-info" @click="toggleModal">+</button>
-        <button class="btn btn-outline-danger" @click="handleClick">
-          Log out
-        </button>
-      </div>
-    </div>
-  </nav>
-  <div>
-    <Modal @close="toggleModal" :modalActive="modalActive">
-      <div class="modal-stuff"></div>
-    </Modal>
-  </div>
-
-  <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
-    <div class="card text-dark bg-light mb-2 p-1" style="width: 45rem; box-shadow: 0px 5px 15px black;">
-      <div class="blog-name-time">
-        <h5>{{ blog.userName }}</h5>
-        <p class="time">{{ blog.createdAt }}</p>
-      </div>
-      <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
-      <div class="card-body p-1">
-        <h3 class="card-title">{{ blog.title }}</h3>
-        <q class="card-text">{{ blog.content }}</q
-        ><br />
-        <div class="tags" v-for="tag in blog.tags" :key="tag">
-          <p class="tag">#{{ tag }}</p>
+  <div class="fullPage">
+    <nav class="navBar">
+      <div class="container">
+        <div class="headers">
+          <router-link class="head" :to="{ name: 'Blogs' }"
+            >Welcome</router-link
+          >
+          <p class="displayName">{{ user.displayName }}</p>
         </div>
-        <div class="like-comment">
-          <p v-if="blog.liked" @click="toggleLike(blog)" class="likeBtn">
-            <i class="fas fa-heart"></i>
-          </p>
-          <p v-if="!blog.liked" @click="toggleLike(blog)">
-            <i v-bind:class="heart"></i>
-          </p>
-          <p @click="toggleModal2(blog)"><i class="fas fa-comments"></i></p>
+        <div class="buttons">
+          <router-link :to="{ name: 'Userblogs' }"
+            ><button class="btn btn-outline-success">
+              My Blogs
+            </button></router-link
+          >
+          <button class="btn btn-outline-info" @click="toggleModal">+</button>
+          <button class="btn btn-outline-danger" @click="handleClick">
+            Log out
+          </button>
         </div>
       </div>
-    </div>
+    </nav>
     <div>
-      <Comment
-        @close="toggleModal2"
-        :modalActive2="modalActive2"
-        :doc="blog.id"
-      />
+      <Modal @close="toggleModal" :modalActive="modalActive">
+        <div class="modal-stuff"></div>
+      </Modal>
+    </div>
+
+    <div class="SingleBlog" v-for="blog in formattedDocs" :key="blog">
+      <div
+        class="card text-dark bg-light mb-2 p-1"
+        style="width: 45rem; box-shadow: 0px 5px 15px black;"
+      >
+        <div class="blog-name-time">
+          <h5>{{ blog.userName }}</h5>
+          <p class="time">{{ blog.createdAt }}</p>
+        </div>
+        <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
+        <div class="card-body p-1">
+          <h3 class="card-title">{{ blog.title }}</h3>
+          <q class="card-text">{{ blog.content }}</q
+          ><br />
+          <div class="tags" v-for="tag in blog.tags" :key="tag">
+            <p class="tag">#{{ tag }}</p>
+          </div>
+          <div class="like-comment">
+            <p v-if="blog.liked" @click="toggleLike(blog)" class="likeBtn">
+              <i class="fas fa-heart"></i>
+            </p>
+            <p v-if="!blog.liked" @click="toggleLike(blog)">
+              <i v-bind:class="heart"></i>
+            </p>
+            <p @click="toggleModal2(blog.id)">
+              <i class="fas fa-comments"></i>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <CommentView
+          @close="toggleModal2"
+          :modalActiveTwo="modalActiveTwo"
+          :id="blogId"
+        />
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -69,27 +76,32 @@ import LogoutUser from "../composable/LogoutUser";
 import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
-import Comment from "../components/Comment.vue";
+import CommentView from "../components/commentView.vue";
 import { formatDistanceToNow } from "date-fns";
 import { projectFire } from "../firebase/config";
 
 export default {
-  components: { Modal, Comment },
+  components: { Modal, CommentView },
   props: ["id"],
   setup(props) {
+    const blogId = ref("");
     const heart = "far fa-heart";
     const showlikes = ref(false);
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
-    const { blogs, err } = getBlogs("blogs");
+    const { blogs, err } = getBlogs("blogs", props.id);
     const modalActive = ref(false);
-    const modalActive2 = ref(false);
+    const modalActiveTwo = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
     };
-    const toggleModal2 = (blog) => {
-      modalActive2.value = !modalActive2.value;
+
+    const toggleModal2 = (id) => {
+      blogId.value = id;
+      if (blogId.value === blogId.value) {
+        modalActiveTwo.value = !modalActiveTwo.value;
+      }
     };
 
     const formattedDocs = computed(() => {
@@ -112,7 +124,7 @@ export default {
       if (!error.value) {
         console.log("user logged out");
       }
-      router.push({name: "Welcome"})
+      router.push({ name: "Welcome" });
     };
 
     const toggleLike = (blog) => {
@@ -131,13 +143,15 @@ export default {
       err,
       formattedDocs,
       modalActive,
-      modalActive2,
+      modalActiveTwo,
       user,
       toggleModal,
       showlikes,
       heart,
       toggleLike,
       toggleModal2,
+      props,
+      blogId,
     };
   },
 };
@@ -214,7 +228,7 @@ export default {
 .liked-icon {
   margin-right: 55%;
 }
-.likeBtn{
+.likeBtn {
   color: red;
 }
 </style>

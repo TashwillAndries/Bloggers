@@ -11,6 +11,17 @@ const useComment = (collection) => {
 
     try {
       await projectFire.collection(collection).add(doc);
+
+      projectFire
+        .collection("blogs")
+        .doc(blogs.id)
+        .collection("comments")
+        .add(doc)
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data());
+          });
+        });
       isPending.value = false;
     } catch (err) {
       console.log(err.message);
