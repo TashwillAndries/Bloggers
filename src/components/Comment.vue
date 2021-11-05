@@ -5,6 +5,7 @@
         <div class="modal-inner p-3" v-if="blogs">
             <i @click="close" class="far fa-times-circle"></i>
             <div class="Container" v-for="doc in formatted" :key="doc.id">
+              <h4 v-if="doc.blogTitle === props.title">{{doc.blogTitle}}</h4>
               <div class="comment" v-if="doc.commentId === props.id">
               <h5>{{doc.userName}}</h5>
               <p>{{doc.comment}}</p>
@@ -32,7 +33,7 @@ import useBlogs from '../composable/useBlogs'
 import { formatDistanceToNow } from 'date-fns'
 
 export default {
-    props: ["modalActive2", "id"],
+    props: ["modalActive2", "id","title"],
     setup(props, { emit }) {
         const close = () => {
             emit("close");
@@ -79,6 +80,10 @@ export default {
   border-radius: 25px;
   background: rgb(236, 233, 233);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+h4 {
+  text-align: center;
 }
 
 .modal-inner i:hover {
