@@ -217,7 +217,7 @@ export default {
   position: relative;
   left: 25%;
   margin-bottom: 3%;
-  margin-top: 5%;
+  margin-top: 6%;
 }
 .time {
   font-size: 10px;
