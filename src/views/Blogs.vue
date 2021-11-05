@@ -58,9 +58,9 @@
         </div>
       </div>
       <div>
-        <CommentView
+        <Comment
           @close="toggleModal2"
-          :modalActiveTwo="modalActiveTwo"
+          :modalActive2="modalActive2"
           :id="blogId"
         />
       </div>
@@ -76,34 +76,49 @@ import LogoutUser from "../composable/LogoutUser";
 import { useRouter } from "vue-router";
 import getBlogs from "../composable/getBlogs";
 import { computed, watch } from "@vue/runtime-core";
-import CommentView from "../components/commentView.vue";
+import Comment from "../components/Comment.vue";
 import { formatDistanceToNow } from "date-fns";
 import { projectFire } from "../firebase/config";
-
 export default {
-  components: { Modal, CommentView },
+  components: { Modal, Comment },
   props: ["id"],
   setup(props) {
-    const blogId = ref("");
     const heart = "far fa-heart";
     const showlikes = ref(false);
+    const blogId = ref("");
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
-    const { blogs, err } = getBlogs("blogs", props.id);
+    const { blogs, err } = getBlogs("blogs");
     const modalActive = ref(false);
-    const modalActiveTwo = ref(false);
+    const modalActive2 = ref(false);
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
+      let model = document.querySelectorAll(".modalName")[0];
+      if (model.style.display == "none") {
+        document.body.style.overflow = "hidden";
+        model.style.position = "fixed";
+        model.style.zIndex = "1000";
+        model.style.top = "0";
+        model.style.width = "100vw";
+        model.style.height = "100vh";
+        model.style.backgroundColor = "rgba(0,0,0,0.5)";
+      } else document.body.style.overflow = "auto";
     };
-
     const toggleModal2 = (id) => {
       blogId.value = id;
-      if (blogId.value === id) {
-        modalActiveTwo.value = !modalActiveTwo.value;
-      }
+      modalActive2.value = !modalActive2.value;
+      let model2 = document.querySelectorAll(".modalName")[1];
+      if (model2.style.display == "none") {
+        document.body.style.overflow = "hidden";
+        model2.style.position = "fixed";
+        model2.style.zIndex = "1000";
+        model2.style.top = "0";
+        model2.style.width = "100vw";
+        model2.style.height = "100vh";
+        model2.style.backgroundColor = "rgba(0,0,0,0.5)";
+      } else document.body.style.overflow = "auto";
     };
-
     const formattedDocs = computed(() => {
       if (blogs.value) {
         return blogs.value.map((post) => {
@@ -112,13 +127,11 @@ export default {
         });
       }
     });
-
     watch(user, () => {
       if (!user.value) {
         router.push({ name: "Welcome" });
       }
     });
-
     const handleClick = async () => {
       await logout();
       if (!error.value) {
@@ -126,7 +139,6 @@ export default {
       }
       router.push({ name: "Welcome" });
     };
-
     const toggleLike = (blog) => {
       projectFire
         .collection("blogs")
@@ -135,7 +147,6 @@ export default {
           liked: !blog.liked,
         });
     };
-
     return {
       user,
       handleClick,
@@ -143,15 +154,15 @@ export default {
       err,
       formattedDocs,
       modalActive,
-      modalActiveTwo,
+      modalActive2,
       user,
       toggleModal,
       showlikes,
       heart,
       toggleLike,
       toggleModal2,
-      props,
       blogId,
+      props,
     };
   },
 };
@@ -172,16 +183,14 @@ export default {
   text-decoration: none;
   font-size: 20px;
 }
-
 .displayName {
   color: white;
   font-size: 20px;
 }
-
 .navBar {
   background: rgb(33, 37, 41);
   width: 100vw;
-  z-index: 100;
+  z-index: 10000;
   position: fixed;
   top: 0;
   left: 0;
