@@ -99,7 +99,7 @@ export default {
 
     const toggleModal2 = (id) => {
       blogId.value = id;
-      if (blogId.value === blogId.value) {
+      if (blogId.value === id) {
         modalActiveTwo.value = !modalActiveTwo.value;
       }
     };
