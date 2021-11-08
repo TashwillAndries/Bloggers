@@ -31,34 +31,37 @@
         <h5>{{ blog.userName }}</h5>
         <p class="time">{{ blog.createdAt }}</p>
       </div>
-      <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
-      <div class="card-body p-1">
-        <h3 class="card-title">{{ blog.title }}</h3>
-        <q class="card-text">{{ blog.content }}</q
-        ><br />
-        <div class="tags" v-for="tag in blog.tags" :key="tag">
-          <p class="tag">#{{ tag }}</p>
-        </div>
-        <div class="like-comment">
-          <p v-if="blog.liked" @click="toggleLike(blog)" class="likeBtn">
-            <i class="fas fa-heart"></i>
-          </p>
-          <p v-if="!blog.liked" @click="toggleLike(blog)">
-            <i v-bind:class="heart"></i>
-          </p>
-          <p @click="toggleModal2(blog)"><i class="fas fa-comments"></i></p>
+        <img class="card-img-top" :src="blog.coverUrl" alt="Card image cap" />
+        <div class="card-body p-1">
+          <h3 class="card-title">{{ blog.title }}</h3>
+          <q class="card-text">{{ blog.content }}</q
+          ><br />
+          <div class="tags" v-for="tag in blog.tags" :key="tag">
+            <p class="tag">#{{ tag }}</p>
+          </div>
+          <div class="like-comment">
+            <p v-if="blog.liked" @click="toggleLike(blog)" class="likeBtn">
+              <i class="fas fa-heart"></i>
+            </p>
+            <p v-if="!blog.liked" @click="toggleLike(blog)">
+              <i v-bind:class="heart"></i>
+            </p>
+            <p @click="toggleModal2(blog.id, blog.title)">
+              <i class="fas fa-comments"></i>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <Comment
-        @close="toggleModal2"
-        :modalActive2="modalActive2"
-        :doc="blog.id"
-      />
+      <div>
+        <Comment
+          @close="toggleModal2"
+          :modalActive2="modalActive2"
+          :id="blogId"
+          :title="blogtitle"
+        />
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -79,6 +82,8 @@ export default {
   setup(props) {
     const heart = "far fa-heart";
     const showlikes = ref(false);
+    const blogId = ref("");
+    const blogtitle = ref("");
     const { logout, error } = LogoutUser();
     const { user } = getUsers();
     const router = useRouter();
@@ -88,7 +93,9 @@ export default {
     const toggleModal = () => {
       modalActive.value = !modalActive.value;
     };
-    const toggleModal2 = (blog) => {
+    const toggleModal2 = (id, title) => {
+      blogId.value = id;
+      blogtitle.value = title;
       modalActive2.value = !modalActive2.value;
     };
 
@@ -138,6 +145,9 @@ export default {
       heart,
       toggleLike,
       toggleModal2,
+      blogId,
+      blogtitle,
+      props,
     };
   },
 };
