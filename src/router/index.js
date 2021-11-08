@@ -34,6 +34,7 @@ const routes = [
     name: "Blogs",
     component: Blogs,
     beforeEnter: requireAuth,
+    props: true,
   },
   {
     path: "/user-blogs",
